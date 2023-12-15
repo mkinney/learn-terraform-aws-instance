@@ -1,3 +1,5 @@
+# Note: Started from https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build
+
 tf plan
 tf apply
 
@@ -9,6 +11,7 @@ or
 # TODO: there's gotta be a better way
  tf state show 'aws_instance.app_server' | grep public_dns
     public_dns                           = "ec2-34-222-139-228.us-west-2.compute.amazonaws.com"
+# added an output, but would like to be able query this via the command line, too
 
 ansible myhosts -m ping -i inventory.ini
 
