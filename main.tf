@@ -15,7 +15,6 @@ provider "aws" {
 
 resource "aws_key_pair" "ssh_key" {
   key_name   = "ssh_key"
-  #public_key = file("~/.ssh/id_rsa.pub")
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
@@ -61,3 +60,7 @@ resource "aws_instance" "app_server" {
 
 }
 
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = aws_instance.app_server.public_ip
+}
