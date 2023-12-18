@@ -60,6 +60,16 @@ resource "aws_instance" "app_server" {
 
 }
 
+# generate inventory file for Ansible
+resource "local_file" "inventory_ini" {
+  content = templatefile("${path.module}/inventory.tpl",
+    {
+      app_servers = aws_instance.app_server.*.public_dns
+    }
+  )
+  filename = "inventory.ini"
+}
+
 output "instance_public_ip" {
   description = "Public IP address of the EC2 instance"
   value       = aws_instance.app_server.public_ip
