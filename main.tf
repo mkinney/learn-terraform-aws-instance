@@ -51,8 +51,8 @@ resource "aws_security_group" "web_instance" {
   name = "web-instance"
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = var.web_server_port
+    to_port     = var.web_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -67,7 +67,7 @@ resource "aws_instance" "web_server" {
   user_data = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
-              nohup busybox httpd -f -p 8080 &
+              nohup busybox httpd -f -p ${var.web_server_port} &
               EOF
   user_data_replace_on_change = true
 
@@ -91,4 +91,10 @@ resource "local_file" "inventory_ini" {
 output "instance_public_ip" {
   description = "Public IP address of the EC2 instance"
   value       = aws_instance.web_server.public_ip
+}
+
+variable "web_server_port" {
+  description = "The port the web server will use for HTTP requests."
+  type = number
+  default = 8080
 }

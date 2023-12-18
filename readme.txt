@@ -20,4 +20,8 @@ Now, something like this:
 Should return:
     Hello, World
 
+terraform plan -var "web_server_port=8080"
+or
+export TF_VAR_web_server_port=8080
+
 tf destroy
