@@ -47,16 +47,34 @@ resource "aws_security_group" "mike_ssh" {
   ]
 }
 
-resource "aws_instance" "app_server" {
+resource "aws_security_group" "web_instance" {
+  name = "web-instance"
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "web_server" {
   ami           = "ami-08e2c1a8d17c2fe17"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
 
+  user_data = <<-EOF
+              #!/bin/bash
+              echo "Hello, World" > index.html
+              nohup busybox httpd -f -p 8080 &
+              EOF
+  user_data_replace_on_change = true
+
   tags = {
-    Name = "ExampleAppServerInstance"
+    Name = "web_server"
   }
-  vpc_security_group_ids = [aws_security_group.mike_ssh.id]
+  vpc_security_group_ids = [aws_security_group.mike_ssh.id,aws_security_group.web_instance.id]
 
 }
 
@@ -64,7 +82,7 @@ resource "aws_instance" "app_server" {
 resource "local_file" "inventory_ini" {
   content = templatefile("${path.module}/inventory.tpl",
     {
-      app_servers = aws_instance.app_server.*.public_dns
+      web_servers = aws_instance.web_server.*.public_dns
     }
   )
   filename = "inventory.ini"
@@ -72,5 +90,5 @@ resource "local_file" "inventory_ini" {
 
 output "instance_public_ip" {
   description = "Public IP address of the EC2 instance"
-  value       = aws_instance.app_server.public_ip
+  value       = aws_instance.web_server.public_ip
 }

@@ -1,4 +1,4 @@
 [myhosts]
-%{ for ip in app_servers ~}
+%{ for ip in web_servers ~}
 ubuntu@${ip}
 %{ endfor ~}

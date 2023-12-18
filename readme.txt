@@ -15,4 +15,9 @@ or
 
 ansible myhosts -m ping -i inventory.ini
 
+Now, something like this:
+    curl http://ec2-18-237-103-32.us-west-2.compute.amazonaws.com:8080
+Should return:
+    Hello, World
+
 tf destroy
