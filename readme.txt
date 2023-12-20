@@ -24,4 +24,18 @@ terraform plan -var "web_server_port=8080"
 or
 export TF_VAR_web_server_port=8080
 
+mkdir test
+go mod init github.com/mkinney/learn-terraform-aws-instance
+go mod tidy
+create test/basic_test.go
+
+go test test/basic_test.go
+ok  	command-line-arguments	96.216s
+
+# to see output
+go test -v test/basic_test.go
+
+Tip: If you temporarily comment out the "defer terraform.Destroy..." line,
+you can quickly iterate on the validations.
+
 tf destroy
