@@ -2,6 +2,7 @@ package test
 
 import (
 	"os/exec"
+	"path/filepath"
 	"fmt"
 	"net"
 	"strings"
@@ -18,22 +19,35 @@ import (
 func TestTerraformBasicExample(t *testing.T) {
 	t.Parallel()
 
+	planFilePath := filepath.Join(".", "plan.out")
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		// Set the path to the Terraform code that will be tested.
 		TerraformDir: "..",
 
 		// Disable colors in Terraform commands so its easier to parse stdout/stderr
 		NoColor: true,
+
+		// Configure a plan file path so we can introspect the plan and make assertions about it.
+		PlanFilePath: planFilePath,
 	})
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, terraformOptions)
 
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
-	terraform.InitAndApply(t, terraformOptions)
+	// terraform.InitAndApply(t, terraformOptions)
+
+	// Run `terraform init`, `terraform plan`, and `terraform show` and fail the test if there are any errors
+	plan := terraform.InitAndPlanAndShow(t, terraformOptions)
 
 	// Idempotency check
 	terraform.ApplyAndIdempotent(t, terraformOptions)
+
+	// Ensure resources exist
+	assert.Equal(t, true, strings.Contains(plan, "aws_key_pair.ssh_key"))
+	assert.Equal(t, true, strings.Contains(plan, "aws_security_group.mike_ssh"))
+	assert.Equal(t, true, strings.Contains(plan, "aws_security_group.web_instance"))
+	assert.Equal(t, true, strings.Contains(plan, "aws_instance.web_server"))
 
 	// Run `terraform output` to get the values of output variables
 
