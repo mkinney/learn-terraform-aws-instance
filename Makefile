@@ -13,6 +13,7 @@ build: vet
 
 lint:
 	tflint
+	terraform validate
 
 test: FORCE
 	go test test/basic_test.go
