@@ -1,18 +1,17 @@
 package test
 
 import (
-	"os/exec"
-	"path/filepath"
 	"fmt"
 	"net"
+	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
 
+	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	http_helper "github.com/gruntwork-io/terratest/modules/http-helper"
-
 )
 
 // An example of how to test the simple Terraform module in examples/terraform-basic-example using Terratest.
@@ -67,9 +66,9 @@ func TestTerraformBasicExample(t *testing.T) {
 	http_helper.HttpGetWithRetry(t, url, nil, 200, "Hello, World", 30, 5*time.Second)
 
 	// Make sure we can run ansible ping (probably a better way to do this), which also
-        // validates that you can ssh to this instance.
-        // Note that the inventory file has to reference the directory above
-    	cmd := exec.Command("ansible", "myhosts", "-m", "ping", "-i", "../inventory.ini")
+	// validates that you can ssh to this instance.
+	// Note that the inventory file has to reference the directory above
+	cmd := exec.Command("ansible", "myhosts", "-m", "ping", "-i", "../inventory.ini")
 	fmt.Println("cmd:", cmd)
 	out, err := cmd.CombinedOutput()
 	assert.Equal(t, nil, err)

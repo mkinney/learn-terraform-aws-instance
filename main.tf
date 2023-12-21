@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.4.1"
+    }
   }
 
   required_version = ">= 1.2.0"
@@ -82,7 +86,7 @@ resource "aws_instance" "web_server" {
 resource "local_file" "inventory_ini" {
   content = templatefile("${path.module}/inventory.tpl",
     {
-      web_servers = aws_instance.web_server.*.public_dns
+      web_servers = aws_instance.web_server[*].public_dns
     }
   )
   filename = "inventory.ini"
