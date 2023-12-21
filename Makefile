@@ -15,6 +15,7 @@ build: vet
 lint:
 	tflint
 	terraform validate
+	golangci-lint run
 
 test: FORCE
 	go test test/basic_test.go

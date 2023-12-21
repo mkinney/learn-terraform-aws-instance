@@ -38,4 +38,7 @@ go test -v test/basic_test.go
 Tip: If you temporarily comment out the "defer terraform.Destroy..." line,
 you can quickly iterate on the validations.
 
+brew install golangci-lint
+brew install tflint
+
 tf destroy
