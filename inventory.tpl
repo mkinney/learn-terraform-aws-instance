@@ -1,4 +1,4 @@
 [myhosts]
 %{ for ip in web_servers ~}
-ubuntu@${ip} ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+ubuntu@${ip} ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'
 %{ endfor ~}
