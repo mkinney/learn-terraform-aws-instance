@@ -25,7 +25,7 @@ resource "aws_key_pair" "ssh_key" {
 resource "aws_security_group" "mike_ssh" {
   egress = [
     {
-      cidr_blocks      = [ "0.0.0.0/0", ]
+      cidr_blocks      = ["0.0.0.0/0", ]
       description      = ""
       from_port        = 0
       ipv6_cidr_blocks = []
@@ -36,18 +36,18 @@ resource "aws_security_group" "mike_ssh" {
       to_port          = 0
     }
   ]
- ingress                = [
-   {
-     cidr_blocks      = [ "0.0.0.0/0", ]
-     description      = ""
-     from_port        = 22
-     ipv6_cidr_blocks = []
-     prefix_list_ids  = []
-     protocol         = "tcp"
-     security_groups  = []
-     self             = false
-     to_port          = 22
-  }
+  ingress = [
+    {
+      cidr_blocks      = ["0.0.0.0/0", ]
+      description      = ""
+      from_port        = 22
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 22
+    }
   ]
 }
 
@@ -63,12 +63,12 @@ resource "aws_security_group" "web_instance" {
 }
 
 resource "aws_instance" "web_server" {
-  ami           = "ami-08e2c1a8d17c2fe17"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.ssh_key.key_name
+  ami                         = "ami-08e2c1a8d17c2fe17"
+  instance_type               = "t2.micro"
+  key_name                    = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
 
-  user_data = <<-EOF
+  user_data                   = <<-EOF
               #!/bin/bash
               echo "Hello, World" > index.html
               nohup busybox httpd -f -p ${var.web_server_port} &
@@ -78,7 +78,7 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = "web_server"
   }
-  vpc_security_group_ids = [aws_security_group.mike_ssh.id,aws_security_group.web_instance.id]
+  vpc_security_group_ids = [aws_security_group.mike_ssh.id, aws_security_group.web_instance.id]
 
 }
 
@@ -104,6 +104,6 @@ output "instance_public_dns" {
 
 variable "web_server_port" {
   description = "The port the web server will use for HTTP requests."
-  type = number
-  default = 8080
+  type        = number
+  default     = 8080
 }

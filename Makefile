@@ -7,6 +7,7 @@ fmt:
 
 vet: fmt
 	go vet ./...
+	terraform fmt
 
 build: vet
 	go build
