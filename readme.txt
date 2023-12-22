@@ -41,4 +41,9 @@ you can quickly iterate on the validations.
 brew install golangci-lint
 brew install tflint
 
+ansible-galaxy collection install datadog.dd
+be sure to export DATADOG_API_KEY
+
+brew install yamllint
+
 tf destroy

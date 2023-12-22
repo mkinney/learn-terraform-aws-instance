@@ -12,10 +12,21 @@ vet: fmt
 build: vet
 	go build
 
+up:
+	terraform plan
+	terraform apply
+
+ping:
+	ansible myhosts -m ping -i inventory.ini
+
+installdd:
+	ansible-playbook -i inventory.ini playbook.yml
+
 lint:
 	tflint
 	terraform validate
 	golangci-lint run
+	yamllint *.yml
 
 test: FORCE
 	go test test/basic_test.go
