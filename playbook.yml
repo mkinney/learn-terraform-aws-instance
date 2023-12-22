@@ -7,7 +7,7 @@
         name: datadog.dd.agent
       become: true
   vars:
-    datadog_api_key: "{{ lookup('ansible.builtin.env', 'DATADOG_API_KEY') }}"
+    datadog_api_key: "{{ lookup('ansible.builtin.env', 'DD_API_KEY') }}"
     datadog_site: "us3.datadoghq.com"
     datadog_checks:
       process:

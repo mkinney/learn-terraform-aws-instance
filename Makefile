@@ -16,6 +16,10 @@ up:
 	terraform plan
 	terraform apply
 
+destroy:
+	terraform destroy
+	rm inventory.ini
+
 ping:
 	ansible myhosts -m ping -i inventory.ini
 

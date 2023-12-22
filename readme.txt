@@ -42,7 +42,11 @@ brew install golangci-lint
 brew install tflint
 
 ansible-galaxy collection install datadog.dd
-be sure to export DATADOG_API_KEY
+be sure to export DD_API_KEY
+go into Data Dog and create an Application Key and export it as DD_APP_KEY
+  be sure to edit scope to have events_read
+Note: can create an event, but it is not visible in the dashboard nor can I get it from curl
+  {"errors":["Forbidden"]}
 
 brew install yamllint
 
