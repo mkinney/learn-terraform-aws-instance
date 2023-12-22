@@ -18,7 +18,6 @@ up:
 
 destroy:
 	terraform destroy
-	rm inventory.ini
 
 ping:
 	ansible myhosts -m ping -i inventory.ini
