@@ -4,6 +4,7 @@
   tasks:
 
 # Note: Consider using community.general.github_release in the future.
+# Got working snippet from here: https://stackoverflow.com/a/70081404
 
     - name: "Get the latest release details"
       uri:
