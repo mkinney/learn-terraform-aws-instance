@@ -23,7 +23,10 @@ ping:
 	ansible myhosts -m ping -i inventory.ini
 
 installdd:
-	ansible-playbook -i inventory.ini playbook.yml
+	ansible-playbook -i inventory.ini dd.yml
+
+installsnet:
+	ansible-playbook -i inventory.ini snet.yml
 
 lint:
 	tflint

@@ -1,0 +1,26 @@
+---
+
+- hosts: myhosts
+  tasks:
+
+# Note: Consider using community.general.github_release in the future.
+
+    - name: "Get the latest release details"
+      uri:
+        url: https://api.github.com/repos/mkinney/snet/releases/latest
+        method: GET
+      register: snet_exp_release
+      delegate_to: localhost
+
+    - name: "Set the release facts"
+      set_fact:
+        snet_download_url: "{{ snet_exp_latest.browser_download_url }}"
+      vars:
+        snet_exp_latest: "{{ snet_exp_release.json|to_json|from_json|json_query('assets[?ends_with(name,`linux-amd64.tar.gz`)]')|first }}"
+
+    - name: "Install snet from github release"
+      become: true
+      unarchive:
+        src: "{{ snet_download_url }}"
+        dest: /usr/local/bin
+        remote_src: true

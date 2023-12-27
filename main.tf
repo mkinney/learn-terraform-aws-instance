@@ -17,8 +17,8 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_key_pair" "ssh_key" {
-  key_name   = "ssh_key"
+resource "aws_key_pair" "mike_ssh_key" {
+  key_name   = "mike_ssh_key"
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "web_instance" {
 resource "aws_instance" "web_server" {
   ami                         = "ami-08e2c1a8d17c2fe17"
   instance_type               = "t2.micro"
-  key_name                    = aws_key_pair.ssh_key.key_name
+  key_name                    = aws_key_pair.mike_ssh_key.key_name
   associate_public_ip_address = true
 
   user_data                   = <<-EOF
